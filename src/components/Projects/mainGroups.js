@@ -127,7 +127,7 @@ class MainGroups extends Component {
     if(!auth.uid) return <Redirect to='/signin' />
     return (
       <div className="app">
-        <div className="container" style={{marginTop:70}}>
+        <div className="container" style={{marginTop:20}}>
           <Link to="/addGroup" className="btn btn-primary">Add Group</Link>
           <br/><br/>
           <table className="table table-sm table-bordered">
