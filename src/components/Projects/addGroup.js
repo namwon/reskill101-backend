@@ -103,25 +103,26 @@ class AddGroup extends Component {
       <div className="app">
         <div className="container" style={{marginTop:20}}>
           <h2>Add Group Skill</h2>
-          <form  onSubmit={this.handleSubmit}>
-            <div className="row">
-              <div className="col-12">
-                <div className="form-row">
-                  <div className="col-3">
-                    <input type="text" name="title" className="form-control" placeholder="Title" onChange={this.handleChange} value={this.state.title}/>
-                  </div>
-                  <div className="col-5">
-                    <input type="text" name="desc" className="form-control" placeholder="desc" onChange={this.handleChange} value={this.state.desc}/>
-                  </div>
-                  <div>
-                    <input type="file" name="photos" onChange={this.handleFileChange}/>
-                  </div>
-                  <div className="col">
-                    <button class="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
-                  </div>
+          <form onSubmit={this.handleSubmit} style={{marginTop:20}}>
+            <div className="form-group row">
+                <label for="title" className="col-md-2 col-form-label">Title</label>
+                <div className="col-md-5">
+                    <input type="text" className="form-control" name="title" placeholder="Enter Title Group" onChange={this.handleChange} value={this.state.title}/>
                 </div>
-              </div>
             </div>
+            <div className="form-group row">
+                <label for="desc" className="col-md-2 col-form-label">Description</label>
+                <div className="col-md-8">
+                    <textarea className="form-control" name="desc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.desc}</textarea>
+                </div>
+            </div>
+            <div className="form-group row">
+                <label for="photos" className="col-md-2 col-form-label">Cover Group</label>
+                <div className="col-md-10">
+                    <input type="file" name="photos" onChange={this.handleFileChange}/>
+                </div>
+            </div>
+            <button className="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
           </form>
         </div>
       </div>
