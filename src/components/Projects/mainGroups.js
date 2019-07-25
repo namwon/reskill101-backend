@@ -25,7 +25,7 @@ class MainGroups extends Component {
   }
 
   componentDidMount(){
-    const itemsRef = firebase.database().ref('bookshelf/data').orderByChild('createedAt').limitToLast(100);
+    const itemsRef = firebase.database().ref('bookshelf/data').orderByChild('createedAt');
     itemsRef.on('value',(snapshot) => {
        let items = snapshot.val();
        let newState = [];
