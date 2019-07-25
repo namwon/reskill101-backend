@@ -69,8 +69,8 @@ class AddGroup extends Component {
     const mainimg =  storageRef.child(this.state.photos.name)
     mainimg.put(this.state.photos)
       .then((snapshot) => {
-        console.log('upload complete')
-        console.log('getDownloadURL start')        
+        //console.log('upload complete')
+        //console.log('getDownloadURL start')        
         mainimg.getDownloadURL().then(
           (url) => {
             this.setState({
@@ -94,41 +94,15 @@ class AddGroup extends Component {
           }
         )
       });
-    //console.log(this.state.photos)
-       
-    
-  }
-  handleUpdate = (item_id = null , title = null , desc = null, photos = null) => {
-    this.setState({item_id,title,desc,photos})
   }
 
-  updateItem(){
-
-      var obj = { title:this.state.title,desc:this.state.desc }
-
-      const itemsRef = firebase.database().ref('/bookshelf/data')
-
-      itemsRef.child(this.state.item_id).update(obj);
-
-      this.setState({
-        item_id:'',
-        title:'',
-        desc:'',
-        photos:''
-      })
-
-  }
-
-  removeItem(itemId){
-    const itemsRef = firebase.database().ref('/bookshelf/data');
-    itemsRef.child(itemId).remove();
-  }
   render() {
     const { auth  } = this.props;
     if(!auth.uid) return <Redirect to='/signin' />
     return (
       <div className="app">
-        <div className="container" style={{marginTop:70}}>
+        <div className="container" style={{marginTop:20}}>
+          <h2>Add Group Skill</h2>
           <form  onSubmit={this.handleSubmit}>
             <div className="row">
               <div className="col-12">
@@ -149,40 +123,6 @@ class AddGroup extends Component {
               </div>
             </div>
           </form>
-          <hr/>
-          <table className="table table-sm table-bordered">
-            <thead>
-              <tr className="thead-dark">
-                <th width="20%">Thumail</th>
-                <th width="65%">Title</th>
-                <th width="5%">Videos</th>
-                <th width="5%">Edit</th>
-                <th width="5%">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              this.state.items.map((item) => {
-                return (
-                  <tr>
-                    <td>
-                      <img className="img-fluid" src={item.photos} alt={item.title}/>
-                    </td>
-                    <td>
-                      <h5>{item.title}</h5>
-                      {item.desc}
-                    </td>
-                    <td>
-                      <Link to={'/item/' + item.item_id} key={item.item_id}  className='btn btn-info btn-sm'>Add</Link>
-                    </td>
-                    <td><button className="btn btn-warning btn-sm" onClick={() => this.handleUpdate(item.item_id,item.title,item.desc)}>Edit</button></td>
-                    <td><button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.item_id)}>Delete</button></td>
-                  </tr>
-                )
-              })
-            }
-            </tbody>
-          </table>
         </div>
       </div>
     );

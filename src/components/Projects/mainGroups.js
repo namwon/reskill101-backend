@@ -128,27 +128,8 @@ class MainGroups extends Component {
     return (
       <div className="app">
         <div className="container" style={{marginTop:70}}>
-          <form  onSubmit={this.handleSubmit}>
-            <div className="row">
-              <div className="col-12">
-                <div className="form-row">
-                  <div className="col-3">
-                    <input type="text" name="title" className="form-control" placeholder="Title" onChange={this.handleChange} value={this.state.title}/>
-                  </div>
-                  <div className="col-5">
-                    <input type="text" name="desc" className="form-control" placeholder="desc" onChange={this.handleChange} value={this.state.desc}/>
-                  </div>
-                  <div>
-                    <input type="file" name="photos" onChange={this.handleFileChange}/>
-                  </div>
-                  <div className="col">
-                    <button class="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-          <hr/>
+          <Link to="/addGroup" className="btn btn-primary">Add Group</Link>
+          <br/><br/>
           <table className="table table-sm table-bordered">
             <thead>
               <tr className="thead-dark">
