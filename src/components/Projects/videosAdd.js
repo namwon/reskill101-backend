@@ -77,6 +77,7 @@ class VideosAdd extends Component {
         titlevideo:'',
         count: 0
       })
+      this.props.history.push('/item/'+id)
     })
   }
 
@@ -125,7 +126,7 @@ class VideosAdd extends Component {
             <div className="form-group row">
                 <label for="linkvideo" className="col-md-2 col-form-label">Link URL</label>
                 <div className="col-md-5">
-                    <input type="text" className="form-control" name="linkvideo" placeholder="Enter http://yputube.com/xxxxx" onChange={this.handleChange} value={this.state.linkvideo}/>
+                    <input type="text" className="form-control" name="linkvideo" placeholder="Enter http://youtube.com/xxxxx" onChange={this.handleChange} value={this.state.linkvideo}/>
                 </div>
             </div>
             <div className="form-group row">
