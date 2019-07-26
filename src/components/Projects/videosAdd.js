@@ -64,6 +64,8 @@ class VideosAdd extends Component {
     const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
 
     const item = {
+      linkvideo:this.state.linkvideo,
+      titlevideo:this.state.titlevideo,
       pagedesc : this.state.pagedesc,
       photo : this.state.photo
     }
