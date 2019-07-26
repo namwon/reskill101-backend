@@ -102,7 +102,7 @@ class VideosList extends Component {
   }
 
   render(props) {
-    const { auth, group } = this.props;
+    const { auth, group, id } = this.props;
     if(!auth.uid) return <Redirect to='/signin' />
     return (
       <div className="app">
@@ -110,7 +110,7 @@ class VideosList extends Component {
           <h3>{group.title}</h3>
           {group.desc}
           <hr/>
-          <Link to={'/addVideo/' + group.item_id} key={group.item_id}  className='btn btn-info'>Add Video</Link>
+          <Link to={'/addVideo/' + id} key={id}  className='btn btn-info'>Add Video</Link>
           <table className="table table-sm table-bordered">
             <thead className="thead-dark">
               <tr>
@@ -150,7 +150,7 @@ const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id
   const mainItems = state.firebase.data.bookshelf
   const group = mainItems ? mainItems.data[id] : null
-  //console.log(group);
+  console.log(group);
 
  return{
    group: group,
