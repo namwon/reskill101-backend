@@ -72,7 +72,7 @@ class VideosAdd extends Component {
       this.setState({
         page_id: '',
         pagedesc:'',
-        photo:'',,
+        photo:'',
         linkvideo:'',
         titlevideo:'',
         count: 0
