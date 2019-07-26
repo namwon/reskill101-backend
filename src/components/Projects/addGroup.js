@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import firebase from '../../config/firebase'
 import { firebaseConnect } from 'react-redux-firebase'
-import { Link, Redirect} from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 
 //import firebaseApp from 'firebase'
 
@@ -25,7 +25,7 @@ class AddGroup extends Component {
   }
 
   componentDidMount(){
-    const itemsRef = firebase.database().ref('bookshelf/data').orderByChild('createedAt').limitToLast(100);
+    const itemsRef = firebase.database().ref('bookshelf/data');
     itemsRef.on('value',(snapshot) => {
        let items = snapshot.val();
        let newState = [];
