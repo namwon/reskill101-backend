@@ -18,6 +18,8 @@ class VideosList extends Component {
       page_id: '',
       pagedesc:'',
       photo:'',
+      linkvideo:'',
+      titlevideo:'',
       count: 0
      }
      
@@ -41,7 +43,9 @@ class VideosList extends Component {
           newState.push({
              page_id:item,
              pagedesc:items[item].pagedesc,
-             photo:items[item].photo
+             photo:items[item].photo,
+             linkvideo:items[item].linkvideo,
+             titlevideo:items[item].titlevideo
           })
        }
        this.setState({
@@ -69,28 +73,13 @@ class VideosList extends Component {
         page_id: '',
         pagedesc:'',
         photo:'',
+        linkvideo:'',
+        titlevideo:'',
         count: 0
       })
     })
   }
 
-  updateItem(){
-    const { id } = this.props;
-
-    var obj = { pagedesc:this.state.pagedesc, photo:this.state.photo }
-
-    const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
-
-    itemsRef.child(this.state.item_id).update(obj);
-
-    this.setState({
-      item_id:'',
-      pagedesc:'',
-      photo:'',
-      count: 0
-    })
-
-  }
   removeItem(itemId){
     const { id } = this.props;
 
@@ -115,6 +104,7 @@ class VideosList extends Component {
             <thead className="thead-dark">
               <tr>
                 <th>No.</th>
+                <th>Cover</th>
                 <th>Video Description</th>
                 <th>Video URL</th>
                 <th>Delete</th>
@@ -127,11 +117,12 @@ class VideosList extends Component {
                 return (
                   <tr>
                     <td>{this.state.count}</td>
+                    <td><img className="img-fluid" src={item.photo} alt={item.title}/></td>
                     <td>
                       {item.pagedesc}
                     </td>
                     <td>
-                      <a href={item.photo} target="_blank" rel={item.pagedesc}>{item.photo}</a>
+                      <a href={item.linkvideo} target="_blank" rel={item.pagedesc}>{item.linkvideo}</a>
                     </td>
                     <td><button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.page_id)}>Delete</button></td>
                   </tr>
