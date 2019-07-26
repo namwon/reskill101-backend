@@ -18,6 +18,8 @@ class VideosAdd extends Component {
       page_id: '',
       pagedesc:'',
       photo:'',
+      linkvideo:'',
+      titlevideo:'',
       count: 0
      }
      
@@ -41,7 +43,9 @@ class VideosAdd extends Component {
           newState.push({
              page_id:item,
              pagedesc:items[item].pagedesc,
-             photo:items[item].photo
+             photo:items[item].photo,
+             linkvideo:items[item].linkvideo,
+             titlevideo:items[item].titlevideo
           })
        }
        this.setState({
@@ -68,7 +72,9 @@ class VideosAdd extends Component {
       this.setState({
         page_id: '',
         pagedesc:'',
-        photo:'',
+        photo:'',,
+        linkvideo:'',
+        titlevideo:'',
         count: 0
       })
     })
@@ -107,55 +113,35 @@ class VideosAdd extends Component {
     return (
       <div className="app">
         <div className="container" style={{marginTop:70}}>
-          <h3>{group.title}</h3>
+          <h3>Add Vidoe to [{group.title}]</h3>
           {group.desc}
-          <form  onSubmit={this.handleSubmit}>
-            <div className="row">
-              <div className="col-12">
-                <div className="form-row">
-                  <div className="col-3">
-                    <input type="text" name="pagedesc" className="form-control" placeholder="Page Description" onChange={this.handleChange} value={this.state.pagedesc}/>
-                  </div>
-                  <div className="col-5">
-                    <input type="text" name="photo" className="form-control" placeholder="Photo or Video link" onChange={this.handleChange} value={this.state.photo}/>
-                  </div>
-                  <div className="col">
-                    <button class="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
-                  </div>
+          <form onSubmit={this.handleSubmit} style={{marginTop:20}}>
+            <div className="form-group row">
+                <label for="titlevideo" className="col-md-2 col-form-label">Title</label>
+                <div className="col-md-5">
+                    <input type="text" className="form-control" name="titlevideo" placeholder="Enter Title Group" onChange={this.handleChange} value={this.state.titlevideo}/>
                 </div>
-              </div>
             </div>
+            <div className="form-group row">
+                <label for="linkvideo" className="col-md-2 col-form-label">Link URL</label>
+                <div className="col-md-5">
+                    <input type="text" className="form-control" name="linkvideo" placeholder="Enter http://yputube.com/xxxxx" onChange={this.handleChange} value={this.state.linkvideo}/>
+                </div>
+            </div>
+            <div className="form-group row">
+                <label for="photo" className="col-md-2 col-form-label">Cover Skill</label>
+                <div className="col-md-10">
+                    <input type="file" name="photo" onChange={this.handleFileChange}/>
+                </div>
+            </div>
+            <div className="form-group row">
+                <label for="pagedesc" className="col-md-2 col-form-label">Description</label>
+                <div className="col-md-8">
+                    <textarea className="form-control" name="pagedesc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.pagedesc}</textarea>
+                </div>
+            </div>
+            <button className="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
           </form>
-          <hr/>
-          <table className="table table-sm table-bordered">
-            <thead className="thead-dark">
-              <tr>
-                <th>No.</th>
-                <th>Video Description</th>
-                <th>Video URL</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-              this.state.items.map((item) => {
-                this.state.count++
-                return (
-                  <tr>
-                    <td>{this.state.count}</td>
-                    <td>
-                      {item.pagedesc}
-                    </td>
-                    <td>
-                      <a href={item.photo} target="_blank" rel={item.pagedesc}>{item.photo}</a>
-                    </td>
-                    <td><button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.page_id)}>Delete</button></td>
-                  </tr>
-                )
-              })
-            }
-            </tbody>
-          </table>
         </div>
       </div>
     );
