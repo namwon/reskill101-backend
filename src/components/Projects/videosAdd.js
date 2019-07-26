@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import firebase from '../../config/firebase'
 import { firebaseConnect } from 'react-redux-firebase'
-import { Redirect } from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 
 //import { Link } from 'react-router-dom'
 //import firebaseApp from 'firebase'
@@ -25,12 +25,19 @@ class VideosAdd extends Component {
      
      this.handleChange = this.handleChange.bind(this)
      this.handleSubmit = this.handleSubmit.bind(this)
+     this.handleFileChange = this.handleFileChange.bind(this)
   }
   handleChange(e){
+      this.setState({
+        [e.target.name]:e.target.value
+      })     
+  }
+  handleFileChange(e){
+    const file = e.target.files[0]
     this.setState({
-      [e.target.name]:e.target.value
-    })     
- }
+      photo: file
+    })
+  }
   componentDidMount(){
     const { id } = this.props;
     const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
@@ -62,25 +69,38 @@ class VideosAdd extends Component {
     }
     const { id } = this.props;
     const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
+    const storageRef = firebase.storage().ref('images');
+    const mainimg =  storageRef.child(this.state.photo.name)
+    mainimg.put(this.state.photo)
+    .then((snapshot) => {
+      //console.log('upload complete')
+      //console.log('getDownloadURL start')        
+      mainimg.getDownloadURL().then(
+        (url) => {
+          this.setState({
+            photo: url,
+          })
 
-    const item = {
-      linkvideo:this.state.linkvideo,
-      titlevideo:this.state.titlevideo,
-      pagedesc : this.state.pagedesc,
-      photo : this.state.photo
-    }
-
-    itemsRef.push(item).then(()=>{
-      this.setState({
-        page_id: '',
-        pagedesc:'',
-        photo:'',
-        linkvideo:'',
-        titlevideo:'',
-        count: 0
-      })
-      this.props.history.push('/item/'+id)
-    })
+          const item = {
+            linkvideo:this.state.linkvideo,
+            titlevideo:this.state.titlevideo,
+            pagedesc : this.state.pagedesc,
+            photo : this.state.photo,
+            createedAt: firebase.database.ServerValue.TIMESTAMP
+          }
+          itemsRef.push(item).then(()=>{console.log('load complete')})
+          this.setState({
+            page_id: '',
+            pagedesc:'',
+            photo:'',
+            linkvideo:'',
+            titlevideo:'',
+            count: 0
+          })
+          this.props.history.push('/item/'+id)
+        }
+      )
+    });
   }
 
   updateItem(){

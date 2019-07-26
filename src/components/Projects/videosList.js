@@ -100,6 +100,7 @@ class VideosList extends Component {
           {group.desc}
           <hr/>
           <Link to={'/addVideo/' + id} key={id}  className='btn btn-info'>Add Video</Link>
+          <br/><br/>
           <table className="table table-sm table-bordered">
             <thead className="thead-dark">
               <tr>
