@@ -128,7 +128,6 @@ class VideosList extends Component {
                     </td>
                     <td>
                       <Link to={'/Video/' + id + '/edit/' + item.page_id} key={item.page_id}  className='btn btn-sm btn-warning'>Edit</Link>
-                      <button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.page_id)}>Delete</button>
                     </td>
                     <td><button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.page_id)}>Delete</button></td>
                   </tr>
