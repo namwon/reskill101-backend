@@ -156,7 +156,7 @@ class MainGroups extends Component {
                       <Link to={'/item/' + item.item_id} key={item.item_id}  className='btn btn-info btn-sm'>Add</Link>
                     </td>
                     <td>
-                      <Link to={'/editGroup/' + item.item_id} key={item.item_id}  className='btn btn-warning btn-sm'>Add</Link>
+                      <Link to={'/editGroup/' + item.item_id} key={item.item_id}  className='btn btn-warning btn-sm'>Edit</Link>
                     </td>
                     <td><button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.item_id)}>Delete</button></td>
                   </tr>
