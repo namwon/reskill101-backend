@@ -14,7 +14,7 @@ class VideosAdd extends Component {
      super(props);
      this.state = {
       items:[],
-      //mainTitle: props.group.title,
+      teacher: '',
       page_id: '',
       pagedesc:'',
       photo:'',
@@ -52,7 +52,8 @@ class VideosAdd extends Component {
              pagedesc:items[item].pagedesc,
              photo:items[item].photo,
              linkvideo:items[item].linkvideo,
-             titlevideo:items[item].titlevideo
+             titlevideo:items[item].titlevideo,
+             teacher: items[item].teacher
           })
        }
        this.setState({
@@ -64,9 +65,6 @@ class VideosAdd extends Component {
   handleSubmit(e){
     e.preventDefault();
 
-    if(this.state.page_id !== ''){
-         return this.updateItem()
-    }
     const { id } = this.props;
     const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
     const storageRef = firebase.storage().ref('images');
@@ -86,6 +84,7 @@ class VideosAdd extends Component {
             titlevideo:this.state.titlevideo,
             pagedesc : this.state.pagedesc,
             photo : this.state.photo,
+            teacher: this.state.teacher,
             createedAt: firebase.database.ServerValue.TIMESTAMP
           }
           itemsRef.push(item).then(()=>{console.log('load complete')})
@@ -95,39 +94,13 @@ class VideosAdd extends Component {
             photo:'',
             linkvideo:'',
             titlevideo:'',
+            teacher: '',
             count: 0
           })
           this.props.history.push('/item/'+id)
         }
       )
     });
-  }
-
-  updateItem(){
-    const { id } = this.props;
-
-    var obj = { pagedesc:this.state.pagedesc, photo:this.state.photo }
-
-    const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
-
-    itemsRef.child(this.state.item_id).update(obj);
-
-    this.setState({
-      item_id:'',
-      pagedesc:'',
-      photo:'',
-      count: 0
-    })
-
-  }
-  removeItem(itemId){
-    const { id } = this.props;
-
-    const itemsRef = firebase.database().ref('/bookshelf/data/'+ id + '/page');
-    itemsRef.child(itemId).remove();
-    this.setState({
-      count: 0
-    })
   }
 
   render(props) {
@@ -140,28 +113,38 @@ class VideosAdd extends Component {
           {group.desc}
           <form onSubmit={this.handleSubmit} style={{marginTop:20}}>
             <div className="form-group row">
-                <label for="titlevideo" className="col-md-2 col-form-label">Title</label>
-                <div className="col-md-5">
-                    <input type="text" className="form-control" name="titlevideo" placeholder="Enter Title Group" onChange={this.handleChange} value={this.state.titlevideo}/>
-                </div>
+              <label for="titlevideo" className="col-md-2 col-form-label">Title</label>
+              <div className="col-md-5">
+                <input type="text" className="form-control" name="titlevideo" placeholder="Enter Title Group" onChange={this.handleChange} value={this.state.titlevideo}/>
+              </div>
             </div>
             <div className="form-group row">
-                <label for="linkvideo" className="col-md-2 col-form-label">Link URL</label>
-                <div className="col-md-5">
-                    <input type="text" className="form-control" name="linkvideo" placeholder="Enter http://youtube.com/xxxxx" onChange={this.handleChange} value={this.state.linkvideo}/>
-                </div>
+              <label for="teacher" className="col-md-2 col-form-label">Teacher</label>
+              <div className="col-md-5">
+                <input type="text" className="form-control" name="teacher" placeholder="Enter Teacher name" onChange={this.handleChange} value={this.state.teacher} />
+              </div>
             </div>
             <div className="form-group row">
-                <label for="photo" className="col-md-2 col-form-label">Cover Skill</label>
-                <div className="col-md-10">
-                    <input type="file" name="photo" onChange={this.handleFileChange}/>
-                </div>
+              <label for="linkvideo" className="col-md-2 col-form-label">Link URL</label>
+              <div className="col-md-5">
+                <input type="text" className="form-control" name="linkvideo" placeholder="Enter http://youtube.com/xxxxx" onChange={this.handleChange} value={this.state.linkvideo}/>
+              </div>
             </div>
             <div className="form-group row">
-                <label for="pagedesc" className="col-md-2 col-form-label">Description</label>
-                <div className="col-md-8">
-                    <textarea className="form-control" name="pagedesc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.pagedesc}</textarea>
-                </div>
+              <label for="photo" className="col-md-2 col-form-label">Cover Skill</label>
+              <div className="col-md-3">
+                <input type="file" name="photo" onChange={this.handleFileChange}/>
+              </div>
+              <label for="duration" className="col-md-2 col-form-label text-right">Duration</label>
+              <div className="col-md-3">
+                <input type="text" className="form-control" name="duration" placeholder="99 min" onChange={this.handleChange} value={this.state.duration} />
+              </div>
+            </div>
+            <div className="form-group row">
+              <label for="pagedesc" className="col-md-2 col-form-label">Description</label>
+              <div className="col-md-8">
+                <textarea className="form-control" name="pagedesc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.pagedesc}</textarea>
+              </div>
             </div>
             <button className="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
           </form>
