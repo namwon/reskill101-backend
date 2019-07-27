@@ -108,6 +108,7 @@ class VideosList extends Component {
                 <th>Cover</th>
                 <th>Video Description</th>
                 <th>Video URL</th>
+                <th>Edit</th>
                 <th>Delete</th>
               </tr>
             </thead>
@@ -124,6 +125,10 @@ class VideosList extends Component {
                     </td>
                     <td>
                       <a href={item.linkvideo} target="_blank" rel={item.pagedesc}>{item.linkvideo}</a>
+                    </td>
+                    <td>
+                      <Link to={'/Video/' + id + '/edit/' + item.page_id} key={item.page_id}  className='btn btn-sm btn-warning'>Edit</Link>
+                      <button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.page_id)}>Delete</button>
                     </td>
                     <td><button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.page_id)}>Delete</button></td>
                   </tr>
