@@ -39,13 +39,15 @@ class VideosEdit extends Component {
     })
   }
   componentDidMount(){
-    const { id } = this.props;
-    const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
+    const { id, eid } = this.props;
+    const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page/'+ eid)
     //console.log(group);
     
     itemsRef.on('value',(snapshot) => {
        let items = snapshot.val();
-       let newState = [];
+       console.log(items);
+       
+       /*let newState = [];
        for(let item in items){
           newState.push({
              page_id:item,
@@ -55,9 +57,14 @@ class VideosEdit extends Component {
              titlevideo:items[item].titlevideo,
              teacher: items[item].teacher
           })
-       }
+       }*/
        this.setState({
-          items:newState
+        page_id:items,
+        pagedesc:items.pagedesc,
+        photo:items.photo,
+        linkvideo:items.linkvideo,
+        titlevideo:items.titlevideo,
+        teacher: items.teacher
        })
     })
   }
@@ -143,7 +150,7 @@ class VideosEdit extends Component {
             <div className="form-group row">
               <label for="pagedesc" className="col-md-2 col-form-label">Description</label>
               <div className="col-md-8">
-                <textarea className="form-control" name="pagedesc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.pagedesc}</textarea>
+                <textarea className="form-control" name="pagedesc" rows="3" placeholder="Enter Description" onChange={this.handleChange} value={this.state.pagedesc}></textarea>
               </div>
             </div>
             <button className="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
@@ -156,6 +163,7 @@ class VideosEdit extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const id = ownProps.match.params.id
+  const eid = ownProps.match.params.eid
   const mainItems = state.firebase.data.bookshelf
   const group = mainItems ? mainItems.data[id] : null
   //console.log(group);
@@ -163,7 +171,8 @@ const mapStateToProps = (state, ownProps) => {
  return{
    group: group,
    auth: state.firebase.auth,
-   id: id
+   id: id,
+   eid: eid
  }
 
   
