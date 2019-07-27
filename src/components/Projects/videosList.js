@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import firebase from '../../config/firebase'
 import { firebaseConnect } from 'react-redux-firebase'
 import { Link, Redirect } from 'react-router-dom'
-
+import { Table } from 'reactstrap'
 //import { Link } from 'react-router-dom'
 //import firebaseApp from 'firebase'
 
@@ -101,15 +101,15 @@ class VideosList extends Component {
           <hr/>
           <Link to={'/addVideo/' + id} key={id}  className='btn btn-info'>Add Video</Link>
           <br/><br/>
-          <table className="table table-sm table-bordered">
+          <Table responsive striped bordered size="sm">
             <thead className="thead-dark">
               <tr>
                 <th>No.</th>
                 <th>Cover</th>
-                <th>Video Description</th>
-                <th>Video URL</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th className="col-md-5">Video Description</th>
+                <th className="col-md-3">Video URL</th>
+                <th className="col-md-1">Edit</th>
+                <th className="col-md-1">Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -118,7 +118,7 @@ class VideosList extends Component {
                 this.state.count++
                 return (
                   <tr>
-                    <td>{this.state.count}</td>
+                    <th scope="row">{this.state.count}</th>
                     <td><img className="img-fluid" src={item.photo} alt={item.title}/></td>
                     <td>
                       {item.pagedesc}
@@ -135,7 +135,7 @@ class VideosList extends Component {
               })
             }
             </tbody>
-          </table>
+          </Table>
         </div>
       </div>
     );
