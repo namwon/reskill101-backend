@@ -21,6 +21,7 @@ class VideosEdit extends Component {
       old_photo:'',
       linkvideo:'',
       titlevideo:'',
+      duration:'',
       count: 0
      }
      
@@ -54,7 +55,8 @@ class VideosEdit extends Component {
         old_photo:items.photo,
         linkvideo:items.linkvideo,
         titlevideo:items.titlevideo,
-        teacher: items.teacher
+        teacher: items.teacher,
+        duration:items.duration
        })
     })
   }
@@ -64,13 +66,14 @@ class VideosEdit extends Component {
     const { id, eid } = this.props;
     const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
 
-    if (this.state.photo.name === '') {
+    if (this.state.photo === '') {
       var obj = { 
         linkvideo:this.state.linkvideo,
         titlevideo:this.state.titlevideo,
         pagedesc : this.state.pagedesc,
         photo : this.state.old_photo,
-        teacher: this.state.teacher
+        teacher: this.state.teacher,
+        duration: this.state.duration
        }
       itemsRef.child(eid).update(obj);
       this.setState({
@@ -81,6 +84,7 @@ class VideosEdit extends Component {
         linkvideo:'',
         titlevideo:'',
         teacher: '',
+        duration:'',
         count: 0
       })
       this.props.history.push('/item/'+id)
@@ -96,11 +100,12 @@ class VideosEdit extends Component {
             })
   
             const item = {
-              linkvideo:this.state.linkvideo,
-              titlevideo:this.state.titlevideo,
+              linkvideo: this.state.linkvideo,
+              titlevideo: this.state.titlevideo,
               pagedesc : this.state.pagedesc,
               photo : this.state.photo,
-              teacher: this.state.teacher
+              teacher: this.state.teacher,
+              duration: this.state.duration
             }
             itemsRef.child(eid).update(item)
             this.setState({
@@ -111,6 +116,7 @@ class VideosEdit extends Component {
               linkvideo:'',
               titlevideo:'',
               teacher: '',
+              duration:'',
               count: 0
             })
             this.props.history.push('/item/'+id)
@@ -126,8 +132,9 @@ class VideosEdit extends Component {
     return (
       <div className="app">
         <div className="container" style={{marginTop:70}}>
-          <h3>Add Vidoe to [{group.title}]</h3>
+          <h3>Edit Vidoe in [{group.title}]</h3>
           {group.desc}
+          <hr/>
           <form onSubmit={this.handleSubmit} style={{marginTop:20}}>
             <div className="form-group row">
               <label for="titlevideo" className="col-md-2 col-form-label">Title</label>
