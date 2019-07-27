@@ -129,9 +129,9 @@ class VideosAdd extends Component {
               <div className="col-md-5">
                 <input type="text" className="form-control" name="linkvideo" placeholder="Enter http://youtube.com/xxxxx" onChange={this.handleChange} value={this.state.linkvideo}/>
               </div>
-              <label for="duration" className="col-md-2 col-form-label text-right">Duration</label>
-              <div className="col-md-3">
-                <input type="text" className="form-control" name="duration" placeholder="99 min" onChange={this.handleChange} value={this.state.duration} />
+              <label for="duration" className="col-md-1 col-form-label text-right">Duration</label>
+              <div className="col-md-2">
+                <input type="text" className="form-control" name="duration" placeholder="ex. 22.30" onChange={this.handleChange} value={this.state.duration} />
               </div>
             </div>
             <div className="form-group row">
