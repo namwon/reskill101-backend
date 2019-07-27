@@ -64,7 +64,7 @@ class VideosEdit extends Component {
     const { id, eid } = this.props;
     const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
 
-    if (this.state.old_photo !== '') {
+    if (this.state.photo.name === '') {
       var obj = { 
         linkvideo:this.state.linkvideo,
         titlevideo:this.state.titlevideo,
