@@ -18,6 +18,7 @@ class VideosEdit extends Component {
       page_id: '',
       pagedesc:'',
       photo:'',
+      old_photo:'',
       linkvideo:'',
       titlevideo:'',
       count: 0
@@ -46,22 +47,11 @@ class VideosEdit extends Component {
     itemsRef.on('value',(snapshot) => {
        let items = snapshot.val();
        console.log(items);
-       
-       /*let newState = [];
-       for(let item in items){
-          newState.push({
-             page_id:item,
-             pagedesc:items[item].pagedesc,
-             photo:items[item].photo,
-             linkvideo:items[item].linkvideo,
-             titlevideo:items[item].titlevideo,
-             teacher: items[item].teacher
-          })
-       }*/
+      
        this.setState({
         page_id:items,
         pagedesc:items.pagedesc,
-        photo:items.photo,
+        old_photo:items.photo,
         linkvideo:items.linkvideo,
         titlevideo:items.titlevideo,
         teacher: items.teacher
@@ -71,43 +61,63 @@ class VideosEdit extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-
-    const { id } = this.props;
+    const { id, eid } = this.props;
     const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
-    const storageRef = firebase.storage().ref('images');
-    const mainimg =  storageRef.child(this.state.photo.name)
-    mainimg.put(this.state.photo)
-    .then((snapshot) => {
-      //console.log('upload complete')
-      //console.log('getDownloadURL start')        
-      mainimg.getDownloadURL().then(
-        (url) => {
-          this.setState({
-            photo: url,
-          })
 
-          const item = {
-            linkvideo:this.state.linkvideo,
-            titlevideo:this.state.titlevideo,
-            pagedesc : this.state.pagedesc,
-            photo : this.state.photo,
-            teacher: this.state.teacher,
-            createedAt: firebase.database.ServerValue.TIMESTAMP
+    if (this.state.old_photo !== '') {
+      var obj = { 
+        linkvideo:this.state.linkvideo,
+        titlevideo:this.state.titlevideo,
+        pagedesc : this.state.pagedesc,
+        photo : this.state.old_photo,
+        teacher: this.state.teacher
+       }
+      itemsRef.child(eid).update(obj);
+      this.setState({
+        page_id: '',
+        pagedesc:'',
+        photo:'',
+        old_photo:'',
+        linkvideo:'',
+        titlevideo:'',
+        teacher: '',
+        count: 0
+      })
+      this.props.history.push('/item/'+id)
+    } else {
+      const storageRef = firebase.storage().ref('images');
+      const mainimg =  storageRef.child(this.state.photo.name)
+      mainimg.put(this.state.photo)
+      .then((snapshot) => {
+        mainimg.getDownloadURL().then(
+          (url) => {
+            this.setState({
+              photo: url,
+            })
+  
+            const item = {
+              linkvideo:this.state.linkvideo,
+              titlevideo:this.state.titlevideo,
+              pagedesc : this.state.pagedesc,
+              photo : this.state.photo,
+              teacher: this.state.teacher
+            }
+            itemsRef.child(eid).update(item)
+            this.setState({
+              page_id: '',
+              pagedesc:'',
+              photo:'',
+              old_photo:'',
+              linkvideo:'',
+              titlevideo:'',
+              teacher: '',
+              count: 0
+            })
+            this.props.history.push('/item/'+id)
           }
-          itemsRef.push(item).then(()=>{console.log('load complete')})
-          this.setState({
-            page_id: '',
-            pagedesc:'',
-            photo:'',
-            linkvideo:'',
-            titlevideo:'',
-            teacher: '',
-            count: 0
-          })
-          this.props.history.push('/item/'+id)
-        }
-      )
-    });
+        )
+      });
+    }
   }
 
   render(props) {
@@ -143,6 +153,7 @@ class VideosEdit extends Component {
             </div>
             <div className="form-group row">
               <label for="photo" className="col-md-2 col-form-label">Cover Skill</label>
+              <input type="hidden" name="old_photo" value={this.state.ols_photo}/>
               <div className="col-md-10">
                 <input type="file" name="photo" onChange={this.handleFileChange}/>
               </div>
