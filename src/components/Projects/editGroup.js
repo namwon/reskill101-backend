@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import firebase from '../../config/firebase'
 import { firebaseConnect } from 'react-redux-firebase'
-import { Link, Redirect} from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 
 //import firebaseApp from 'firebase'
 
-class MainGroups extends Component {
+class AddGroup extends Component {
 
   constructor(props){
      super(props);
@@ -25,7 +25,7 @@ class MainGroups extends Component {
   }
 
   componentDidMount(){
-    const itemsRef = firebase.database().ref('bookshelf/data').orderByChild('createedAt');
+    const itemsRef = firebase.database().ref('bookshelf/data');
     itemsRef.on('value',(snapshot) => {
        let items = snapshot.val();
        let newState = [];
@@ -69,8 +69,8 @@ class MainGroups extends Component {
     const mainimg =  storageRef.child(this.state.photos.name)
     mainimg.put(this.state.photos)
       .then((snapshot) => {
-        console.log('upload complete')
-        console.log('getDownloadURL start')        
+        //console.log('upload complete')
+        //console.log('getDownloadURL start')        
         mainimg.getDownloadURL().then(
           (url) => {
             this.setState({
@@ -90,82 +90,40 @@ class MainGroups extends Component {
               desc:'',
               photos:null
             })
+            this.props.history.push('/')
           }
         )
       });
-    //console.log(this.state.photos)
-       
-    
-  }
-  handleUpdate = (item_id = null , title = null , desc = null, photos = null) => {
-    this.setState({item_id,title,desc,photos})
   }
 
-  updateItem(){
-
-      var obj = { title:this.state.title,desc:this.state.desc }
-
-      const itemsRef = firebase.database().ref('/bookshelf/data')
-
-      itemsRef.child(this.state.item_id).update(obj);
-
-      this.setState({
-        item_id:'',
-        title:'',
-        desc:'',
-        photos:''
-      })
-
-  }
-
-  removeItem(itemId){
-    const itemsRef = firebase.database().ref('/bookshelf/data');
-    itemsRef.child(itemId).remove();
-  }
   render() {
     const { auth  } = this.props;
     if(!auth.uid) return <Redirect to='/signin' />
     return (
       <div className="app">
         <div className="container" style={{marginTop:20}}>
-          <Link to="/addGroup" className="btn btn-primary">Add Group</Link>
-          <br/><br/>
-          <table className="table table-sm table-bordered">
-            <thead>
-              <tr className="thead-dark">
-                <th width="20%">Thumail</th>
-                <th width="65%">Title</th>
-                <th width="5%">Videos</th>
-                <th width="5%">Edit</th>
-                <th width="5%">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              this.state.items.map((item) => {
-                return (
-                  <tr>
-                    <td>
-                      <img className="img-fluid" src={item.photos} alt={item.title}/>
-                    </td>
-                    <td>
-                      <h5>{item.title}</h5>
-                      {item.desc}
-                    </td>
-                    <td>
-                      <Link to={'/item/' + item.item_id} key={item.item_id}  className='btn btn-info btn-sm'>Add</Link>
-                    </td>
-                    <td>
-                      <Link to={'/editGroup/' + item.item_id} key={item.item_id}  className='btn btn-info btn-sm'>Add</Link>
-                      <button className="btn btn-warning btn-sm" onClick={() => this.handleUpdate(item.item_id,item.title,item.desc)}>Edit</button>
-                    </td>
-                    <td><button className="btn btn-danger btn-sm" onClick={() => this.removeItem(item.item_id)}>Delete</button></td>
-                  </tr>
-                )
-              })
-            }
-            </tbody>
-          </table>
+          <h2>Add Group Skill</h2>
+          <form onSubmit={this.handleSubmit} style={{marginTop:20}}>
+            <div className="form-group row">
+                <label for="title" className="col-md-2 col-form-label">Title</label>
+                <div className="col-md-5">
+                    <input type="text" className="form-control" name="title" placeholder="Enter Title Group" onChange={this.handleChange} value={this.state.title}/>
+                </div>
+            </div>
+            <div className="form-group row">
+                <label for="desc" className="col-md-2 col-form-label">Description</label>
+                <div className="col-md-8">
+                    <textarea className="form-control" name="desc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.desc}</textarea>
+                </div>
+            </div>
+            <div className="form-group row">
+                <label for="photos" className="col-md-2 col-form-label">Cover Group</label>
+                <div className="col-md-10">
+                    <input type="file" name="photos" onChange={this.handleFileChange}/>
+                </div>
+            </div>
+            <button className="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
+          </form>
         </div>
       </div>
     );
@@ -188,4 +146,4 @@ export default compose(
     ]
   })
   
-)(MainGroups)
+)(AddGroup)
