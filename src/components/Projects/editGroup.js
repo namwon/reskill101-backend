@@ -7,7 +7,7 @@ import { Redirect} from 'react-router-dom'
 
 //import firebaseApp from 'firebase'
 
-class AddGroup extends Component {
+class EditGroup extends Component {
 
   constructor(props){
      super(props);
@@ -146,4 +146,4 @@ export default compose(
     ]
   })
   
-)(AddGroup)
+)(EditGroup)
