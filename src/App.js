@@ -16,10 +16,10 @@ class App extends Component {
           <Navbar />
           <Switch>  
             <Route exact path='/' component={MainGroups} />
-            <Route exact path='/mainGroup' component={MainGroups} />
-            <Route exact path='/addGroup' component={AddGroup} />
-            <Route exact path='/addVideo/:id' component={VideosAdd} />
-            <Route exact path='/item/:id' component={VideosList} />
+            <Route path='/mainGroup' component={MainGroups} />
+            <Route path='/addGroup' component={AddGroup} />
+            <Route path='/addVideo/:id' component={VideosAdd} />
+            <Route path='/item/:id' component={VideosList} />
             <Route path='/signin' component={SignIn} />
             <Route path='/signup' component={SignUp} />
           </Switch>

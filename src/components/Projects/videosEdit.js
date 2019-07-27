@@ -8,7 +8,7 @@ import { Redirect} from 'react-router-dom'
 //import { Link } from 'react-router-dom'
 //import firebaseApp from 'firebase'
 
-class VideosAdd extends Component {
+class VideosEdit extends Component {
 
   constructor(props){
      super(props);
@@ -179,7 +179,7 @@ export default compose(
     ]
   })
   
-)(VideosAdd)
+)(VideosEdit)
 /*
 updateItem(){
     const { id } = this.props;
