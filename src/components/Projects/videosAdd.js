@@ -129,15 +129,15 @@ class VideosAdd extends Component {
               <div className="col-md-5">
                 <input type="text" className="form-control" name="linkvideo" placeholder="Enter http://youtube.com/xxxxx" onChange={this.handleChange} value={this.state.linkvideo}/>
               </div>
-            </div>
-            <div className="form-group row">
-              <label for="photo" className="col-md-2 col-form-label">Cover Skill</label>
-              <div className="col-md-3">
-                <input type="file" name="photo" onChange={this.handleFileChange}/>
-              </div>
               <label for="duration" className="col-md-2 col-form-label text-right">Duration</label>
               <div className="col-md-3">
                 <input type="text" className="form-control" name="duration" placeholder="99 min" onChange={this.handleChange} value={this.state.duration} />
+              </div>
+            </div>
+            <div className="form-group row">
+              <label for="photo" className="col-md-2 col-form-label">Cover Skill</label>
+              <div className="col-md-10">
+                <input type="file" name="photo" onChange={this.handleFileChange}/>
               </div>
             </div>
             <div className="form-group row">
@@ -180,3 +180,31 @@ export default compose(
   })
   
 )(VideosAdd)
+/*
+updateItem(){
+    const { id } = this.props;
+
+    var obj = { pagedesc:this.state.pagedesc, photo:this.state.photo }
+
+    const itemsRef = firebase.database().ref('bookshelf/data/'+ id + '/page')
+
+    itemsRef.child(this.state.item_id).update(obj);
+
+    this.setState({
+      item_id:'',
+      pagedesc:'',
+      photo:'',
+      count: 0
+    })
+
+  }
+  removeItem(itemId){
+    const { id } = this.props;
+
+    const itemsRef = firebase.database().ref('/bookshelf/data/'+ id + '/page');
+    itemsRef.child(itemId).remove();
+    this.setState({
+      count: 0
+    })
+  }
+*/
