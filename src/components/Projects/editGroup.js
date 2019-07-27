@@ -16,7 +16,8 @@ class EditGroup extends Component {
         item_id:'',
         title:'',
         desc:'',
-        photos:null
+        photos:'',
+        old_photos:''
      }
 
      this.handleChange = this.handleChange.bind(this)
@@ -25,20 +26,19 @@ class EditGroup extends Component {
   }
 
   componentDidMount(){
-    const itemsRef = firebase.database().ref('bookshelf/data');
+    const { id } = this.props;
+    const itemsRef = firebase.database().ref('bookshelf/data/'+ id)
+    //console.log(group);
+    
     itemsRef.on('value',(snapshot) => {
        let items = snapshot.val();
-       let newState = [];
-       for(let item in items){
-          newState.push({
-             item_id:item,
-             title:items[item].title,
-             desc:items[item].desc,
-             photos:items[item].photos
-          })
-       }
+       //console.log(items);
+      
        this.setState({
-          items:newState
+        item_id:items,
+        title:items.title,
+        desc:items.desc,
+        old_photos:items.photos
        })
     })
   }
@@ -57,43 +57,56 @@ class EditGroup extends Component {
 
   handleSubmit(e){
     e.preventDefault();
+    const { id } = this.props;
+    const itemsRef = firebase.database().ref('bookshelf/data')
 
     //console.log(this.state.photos);
-    if(this.state.item_id !== ''){
-         return this.updateItem()
-    }
-    
-    const itemsRef = firebase.database().ref('bookshelf/data')
-    
-    const storageRef = firebase.storage().ref('images');
-    const mainimg =  storageRef.child(this.state.photos.name)
-    mainimg.put(this.state.photos)
-      .then((snapshot) => {
-        //console.log('upload complete')
-        //console.log('getDownloadURL start')        
-        mainimg.getDownloadURL().then(
-          (url) => {
-            this.setState({
-              photos: url,
-            })
-
-            const item = {
-              title : this.state.title,
-              desc : this.state.desc,
-              photos : this.state.photos,
-              createedAt: firebase.database.ServerValue.TIMESTAMP
+    if(this.state.photos !== ''){
+      const storageRef = firebase.storage().ref('images');
+      const mainimg =  storageRef.child(this.state.photos.name)
+      mainimg.put(this.state.photos)
+        .then((snapshot) => {
+          //console.log('upload complete')
+          //console.log('getDownloadURL start')        
+          mainimg.getDownloadURL().then(
+            (url) => {
+              this.setState({
+                photos: url,
+              })
+  
+              const obj = {
+                title : this.state.title,
+                desc : this.state.desc,
+                photos : this.state.photos,
+                createedAt: firebase.database.ServerValue.TIMESTAMP
+              }
+              itemsRef.child(id).update(obj);
+              this.setState({
+                item_id:'',
+                title:'',
+                desc:'',
+                photos:null
+              })
+              this.props.history.push('/')
             }
-            itemsRef.push(item).then(()=>{console.log('load complete')})
-            this.setState({
-              item_id:'',
-              title:'',
-              desc:'',
-              photos:null
-            })
-            this.props.history.push('/')
-          }
-        )
+          )
       });
+    } else {
+      const obj = {
+        title : this.state.title,
+        desc : this.state.desc,
+        photos : this.state.old_photos,
+        createedAt: firebase.database.ServerValue.TIMESTAMP
+      }
+      itemsRef.child(id).update(obj);
+      this.setState({
+        item_id:'',
+        title:'',
+        desc:'',
+        photos:null
+      })
+      this.props.history.push('/')
+    }
   }
 
   render() {
@@ -113,11 +126,12 @@ class EditGroup extends Component {
             <div className="form-group row">
               <label for="desc" className="col-md-2 col-form-label">Description</label>
               <div className="col-md-8">
-                <textarea className="form-control" name="desc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.desc}</textarea>
+                <textarea className="form-control" name="desc" rows="3" placeholder="Enter Description" onChange={this.handleChange} value={this.state.desc}></textarea>
               </div>
             </div>
             <div className="form-group row">
               <label for="photos" className="col-md-2 col-form-label">Cover Group</label>
+              <input type="hidden" value={this.state.old_photos}/>
               <div className="col-md-10">
                 <input type="file" name="photos" onChange={this.handleFileChange}/>
               </div>
@@ -129,13 +143,18 @@ class EditGroup extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  //console.log(state)
-    return{
-        auth: state.firebase.auth,
-        //notifications: state.firestore.ordered.notifications    
-      }
-  }
+const mapStateToProps = (state, ownProps) => {
+  const id = ownProps.match.params.id
+  const mainItems = state.firebase.data.bookshelf
+  const group = mainItems ? mainItems.data[id] : null
+  //console.log(group);
+
+ return{
+   group: group,
+   auth: state.firebase.auth,
+   id: id
+ }
+}
 
 //export default MainGroups;
 export default compose(
