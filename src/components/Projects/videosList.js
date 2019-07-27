@@ -89,9 +89,9 @@ class VideosList extends Component {
       count: 0
     })
   }
-
   render(props) {
-    const { auth, group, id } = this.props;
+  const MAX_LENGTH = 150;
+  const { auth, group, id } = this.props;
     if(!auth.uid) return <Redirect to='/signin' />
     return (
       <div className="app">
@@ -106,10 +106,9 @@ class VideosList extends Component {
               <tr>
                 <th>No.</th>
                 <th>Cover</th>
-                <th className="col-md-5">Video Description</th>
-                <th className="col-md-3">Video URL</th>
-                <th className="col-md-1">Edit</th>
-                <th className="col-md-1">Delete</th>
+                <th>Video Description</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -121,10 +120,14 @@ class VideosList extends Component {
                     <th scope="row">{this.state.count}</th>
                     <td><img className="img-fluid" src={item.photo} alt={item.title}/></td>
                     <td>
-                      {item.pagedesc}
-                    </td>
-                    <td>
-                      <a href={item.linkvideo} target="_blank" rel={item.pagedesc}>{item.linkvideo}</a>
+                      {item.pagedesc.length > MAX_LENGTH ?
+                        (
+                          <div>
+                            {`${item.pagedesc.substring(0, MAX_LENGTH)}...`}
+                          </div>
+                        ) :
+                        <p>{item.pagedesc}</p>
+                      }
                     </td>
                     <td>
                       <Link to={'/Video/' + id + '/edit/' + item.page_id} key={item.page_id}  className='btn btn-sm btn-warning'>Edit</Link>
