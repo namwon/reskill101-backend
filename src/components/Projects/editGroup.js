@@ -105,22 +105,22 @@ class EditGroup extends Component {
           <h2>Add Group Skill</h2>
           <form onSubmit={this.handleSubmit} style={{marginTop:20}}>
             <div className="form-group row">
-                <label for="title" className="col-md-2 col-form-label">Title</label>
-                <div className="col-md-5">
-                    <input type="text" className="form-control" name="title" placeholder="Enter Title Group" onChange={this.handleChange} value={this.state.title}/>
-                </div>
+              <label for="title" className="col-md-2 col-form-label">Title</label>
+              <div className="col-md-5">
+                <input type="text" className="form-control" name="title" placeholder="Enter Title Group" onChange={this.handleChange} value={this.state.title}/>
+              </div>
             </div>
             <div className="form-group row">
-                <label for="desc" className="col-md-2 col-form-label">Description</label>
-                <div className="col-md-8">
-                    <textarea className="form-control" name="desc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.desc}</textarea>
-                </div>
+              <label for="desc" className="col-md-2 col-form-label">Description</label>
+              <div className="col-md-8">
+                <textarea className="form-control" name="desc" rows="3" placeholder="Enter Description" onChange={this.handleChange}>{this.state.desc}</textarea>
+              </div>
             </div>
             <div className="form-group row">
-                <label for="photos" className="col-md-2 col-form-label">Cover Group</label>
-                <div className="col-md-10">
-                    <input type="file" name="photos" onChange={this.handleFileChange}/>
-                </div>
+              <label for="photos" className="col-md-2 col-form-label">Cover Group</label>
+              <div className="col-md-10">
+                <input type="file" name="photos" onChange={this.handleFileChange}/>
+              </div>
             </div>
             <button className="btn btn-primary" ><i className="fa fa-save"></i> Save</button>      
           </form>
